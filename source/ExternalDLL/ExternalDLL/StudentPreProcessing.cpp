@@ -1,18 +1,19 @@
 #include "StudentPreProcessing.h"
+#include "IntensityImageStudent.h"
+#include "RGBImageStudent.h"
 
+IntensityImage *StudentPreProcessing::stepToIntensityImage(const RGBImage &image) const {
+    IntensityImageStudent *new_img = new IntensityImageStudent(image.getWidth(), image.getHeight());
+    for (int i = 0; i < image.getWidth() * image.getHeight(); i++) {
+        RGB pixel = image.getPixel(i);
+        new_img->setPixel(i, pixel.r * 0.3f + pixel.g * 0.6f + pixel.b * 0.1f);
+    }
 
-IntensityImage * StudentPreProcessing::stepToIntensityImage(const RGBImage &image) const {
-	return nullptr;
+    return new_img;
 }
 
-IntensityImage * StudentPreProcessing::stepScaleImage(const IntensityImage &image) const {
-	return nullptr;
-}
+IntensityImage *StudentPreProcessing::stepScaleImage(const IntensityImage &image) const { return nullptr; }
 
-IntensityImage * StudentPreProcessing::stepEdgeDetection(const IntensityImage &image) const {
-	return nullptr;
-}
+IntensityImage *StudentPreProcessing::stepEdgeDetection(const IntensityImage &image) const { return nullptr; }
 
-IntensityImage * StudentPreProcessing::stepThresholding(const IntensityImage &image) const {
-	return nullptr;
-}
+IntensityImage *StudentPreProcessing::stepThresholding(const IntensityImage &image) const { return nullptr; }
