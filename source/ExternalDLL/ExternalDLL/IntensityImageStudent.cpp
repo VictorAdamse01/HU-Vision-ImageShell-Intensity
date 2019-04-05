@@ -15,11 +15,13 @@ IntensityImageStudent::~IntensityImageStudent() {
 }
 
 void IntensityImageStudent::set(const int width, const int height) {
+	Image::set(width, height);
 	this->values.resize(width);
 	std::fill(values.begin(), values.end(), std::vector<Intensity>(height, 0));
 }
 
 void IntensityImageStudent::set(const IntensityImageStudent &other) {
+	Image::set(other.getWidth(), other.getHeight());
 	IntensityImage::set(other.getWidth(), other.getHeight());
 	this->values = other.values;
 }

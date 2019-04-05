@@ -13,11 +13,13 @@ RGBImageStudent::RGBImageStudent(const int width, const int height) : RGBImage(w
 RGBImageStudent::~RGBImageStudent() {}
 
 void RGBImageStudent::set(const int width, const int height) {
+	Image::set(width, height);
 	this->values.resize(width);
 	std::fill(this->values.begin(), this->values.end(), std::vector<RGB>(height, RGB()));
 }
 
 void RGBImageStudent::set(const RGBImageStudent &other) {
+	Image::set(other.getWidth(), other.getHeight());
 	RGBImage::set(other.getWidth(), other.getHeight());
 	this->values = other.values;
 }
