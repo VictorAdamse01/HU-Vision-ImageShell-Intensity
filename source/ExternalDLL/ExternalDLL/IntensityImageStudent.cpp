@@ -1,41 +1,49 @@
 #include "IntensityImageStudent.h"
-#include <algorithm>
 
 IntensityImageStudent::IntensityImageStudent() : IntensityImage() {
 }
 
 IntensityImageStudent::IntensityImageStudent(const IntensityImageStudent &other) : IntensityImage(other.getWidth(), other.getHeight()) {
-	this->values = other.values;
+	values = new Intensity[other.getWidth() * other.getHeight()];
+	for (int i = 0; i < other.getWidth() * other.getHeight(); i++){
+	    values[i] = other.values[i];
+	}
 }
 
-IntensityImageStudent::IntensityImageStudent(const int width, const int height) : IntensityImage(width, height), values(width,std::vector<Intensity>(height,0)) {
+IntensityImageStudent::IntensityImageStudent(const int width, const int height) : IntensityImage(width, height), values(new Intensity[width * height]) {
 }
 
 IntensityImageStudent::~IntensityImageStudent() {
+    delete[] values;
 }
 
 void IntensityImageStudent::set(const int width, const int height) {
-	this->values.resize(width);
-	std::fill(values.begin(), values.end(), std::vector<Intensity>(height, 0));
+    Image::set(width,height);
+    delete[] values;
+	this->values = new Intensity[width*height];
 }
 
 void IntensityImageStudent::set(const IntensityImageStudent &other) {
-	IntensityImage::set(other.getWidth(), other.getHeight());
-	this->values = other.values;
+	Image::set(other.getWidth(),other.getHeight());
+	delete[] values;
+    values = new Intensity[other.getWidth() * other.getHeight()];
+    for (int i = 0; i < other.getWidth() * other.getHeight(); i++){
+        values[i] = other.values[i];
+    }
 }
 
 void IntensityImageStudent::setPixel(int x, int y, Intensity pixel) {
-	this->values[x][y] = pixel;
+	this->values[y * getWidth() + x] = pixel;
 }
 
 void IntensityImageStudent::setPixel(int i, Intensity pixel) {
-	this->values[i % getWidth()][int(i / getWidth())] = pixel;
+	this->values[i] = pixel;
 }
 
 Intensity IntensityImageStudent::getPixel(int x, int y) const {
-	return this->values[x][y];
+	return this->values[y * getWidth() + x];
 }
 
 Intensity IntensityImageStudent::getPixel(int i) const {
-	return this->values[i % getWidth()][int(i / getWidth())];
+	return this->values[i];
 }
