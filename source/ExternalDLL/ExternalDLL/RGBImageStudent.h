@@ -6,19 +6,19 @@
 
 #pragma once
 #include "RGBImage.h"
-#include <vector>
+
 class RGBImageStudent : public RGBImage {
 private:
-	std::vector<std::vector<RGB>> values;
+    RGB *values;
 
 public:
     RGBImageStudent();
-    RGBImageStudent(const RGBImageStudent& other);
+    RGBImageStudent(const RGBImageStudent &other);
     RGBImageStudent(const int width, const int height);
     ~RGBImageStudent();
 
     void set(const int width, const int height);
-    void set(const RGBImageStudent& other);
+    void set(const RGBImageStudent &other);
 
     void setPixel(int x, int y, RGB pixel);
     void setPixel(int i, RGB pixel);

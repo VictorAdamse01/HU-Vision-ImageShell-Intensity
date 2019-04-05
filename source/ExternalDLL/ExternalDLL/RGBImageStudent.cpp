@@ -1,39 +1,37 @@
 #include "RGBImageStudent.h"
-#include <algorithm>
 
 RGBImageStudent::RGBImageStudent() : RGBImage() {}
 
 RGBImageStudent::RGBImageStudent(const RGBImageStudent &other) : RGBImage(other.getWidth(), other.getHeight()) {
-	this->values = other.values;
+    values = new RGB[other.getHeight() * other.getWidth()];
+    for (int i = 0; i < other.getHeight() * other.getWidth(); i++) {
+        values[i] = other.values[i];
+    }
 }
 
+RGBImageStudent::RGBImageStudent(const int width, const int height) : RGBImage(width, height), values(new RGB[width * height]) {}
 
-RGBImageStudent::RGBImageStudent(const int width, const int height) : RGBImage(width, height), values(width, std::vector<RGB>(height, RGB())) {}
-
-RGBImageStudent::~RGBImageStudent() {}
+RGBImageStudent::~RGBImageStudent() { delete[] values; }
 
 void RGBImageStudent::set(const int width, const int height) {
-	this->values.resize(width);
-	std::fill(this->values.begin(), this->values.end(), std::vector<RGB>(height, RGB()));
+    Image::set(width, height);
+    delete[] values;
+    this->values = new RGB[width * height];
 }
 
 void RGBImageStudent::set(const RGBImageStudent &other) {
-	RGBImage::set(other.getWidth(), other.getHeight());
-	this->values = other.values;
+    Image::set(other.getWidth(), other.getHeight());
+    delete[] values;
+    values = new RGB[other.getHeight() * other.getWidth()];
+    for (int i = 0; i < other.getHeight() * other.getWidth(); i++) {
+        values[i] = other.values[i];
+    }
 }
 
-void RGBImageStudent::setPixel(int x, int y, RGB pixel) {
-	this->values[x][y] = pixel;
-}
+void RGBImageStudent::setPixel(int x, int y, RGB pixel) { this->values[y * getWidth() + x] = pixel; }
 
-void RGBImageStudent::setPixel(int i, RGB pixel) {
-	this->values[i % getWidth()][int(i / getWidth())] = pixel;
-}
+void RGBImageStudent::setPixel(int i, RGB pixel) { this->values[i] = pixel; }
 
-RGB RGBImageStudent::getPixel(int x, int y) const {
-	return this->values[x][y];
-}
+RGB RGBImageStudent::getPixel(int x, int y) const { return this->values[y * getWidth() + x]; }
 
-RGB RGBImageStudent::getPixel(int i) const {
-	return this->values[i % getWidth()][int(i / getWidth())];
-}
+RGB RGBImageStudent::getPixel(int i) const { return this->values[i]; }
