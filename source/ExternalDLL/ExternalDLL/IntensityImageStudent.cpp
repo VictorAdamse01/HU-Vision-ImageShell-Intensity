@@ -29,7 +29,7 @@ void IntensityImageStudent::setPixel(int x, int y, Intensity pixel) {
 }
 
 void IntensityImageStudent::setPixel(int i, Intensity pixel) {
-	this->values[i % values.size()][int(i / values.size())] = pixel;
+	this->values[i % getWidth()][int(i / getWidth())] = pixel;
 }
 
 Intensity IntensityImageStudent::getPixel(int x, int y) const {
@@ -37,5 +37,5 @@ Intensity IntensityImageStudent::getPixel(int x, int y) const {
 }
 
 Intensity IntensityImageStudent::getPixel(int i) const {
-	return this->values[i % values.size()][int(i / values.size())];
+	return this->values[i % getWidth()][int(i / getWidth())];
 }

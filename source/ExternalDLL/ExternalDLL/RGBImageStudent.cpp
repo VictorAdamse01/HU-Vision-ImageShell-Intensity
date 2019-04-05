@@ -27,7 +27,7 @@ void RGBImageStudent::setPixel(int x, int y, RGB pixel) {
 }
 
 void RGBImageStudent::setPixel(int i, RGB pixel) {
-	this->values[i % this->values.size()][int(i / this->values.size())] = pixel;
+	this->values[i % getWidth()][int(i / getWidth())] = pixel;
 }
 
 RGB RGBImageStudent::getPixel(int x, int y) const {
@@ -35,5 +35,5 @@ RGB RGBImageStudent::getPixel(int x, int y) const {
 }
 
 RGB RGBImageStudent::getPixel(int i) const {
-	return this->values[i % this->values.size()][int(i / this->values.size())];
+	return this->values[i % getWidth()][int(i / getWidth())];
 }
