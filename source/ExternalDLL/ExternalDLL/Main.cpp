@@ -9,29 +9,39 @@
 #include "HereBeDragons.h"
 #include "ImageFactory.h"
 #include "DLLExecution.h"
+#include <chrono>
 
 void drawFeatureDebugImage(IntensityImage &image, FeatureMap &features);
 bool executeSteps(DLLExecution * executor);
 
 int main(int argc, char * argv[]) {
 
-	// ImageFactory::setImplementation(ImageFactory::DEFAULT);
-	ImageFactory::setImplementation(ImageFactory::STUDENT);
+	ImageFactory::setImplementation(ImageFactory::DEFAULT);
+	// ImageFactory::setImplementation(ImageFactory::STUDENT);
 
 
-	ImageIO::debugFolder = "D:\\Users\\Rolf\\Downloads\\FaceMinMin";
+	ImageIO::debugFolder = "../Debug/Output";
 	ImageIO::isInDebugMode = true; //If set to false the ImageIO class will skip any image save function calls
+	namespace chrono = std::chrono;
 
-
-
-
-	RGBImage * input = ImageFactory::newRGBImage();
-	if (!ImageIO::loadImage("D:\\Users\\Rolf\\Downloads\\TestA5.jpg", *input)) {
-		std::cout << "Image could not be loaded!" << std::endl;
-		system("pause");
-		return 0;
+	// Load Image test
+	int test_amount = 1;
+	int sum = 0;
+	chrono::milliseconds before_ms;
+	RGBImage * input = ImageFactory::newRGBImage();;
+	for (int i = 0; i < test_amount; i++) {
+		before_ms = chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch());
+		if (!ImageIO::loadImage("../../../testsets/Set A/TestSet Images/child-1.png", *input)) {
+			std::cout << "Image could not be loaded!" << std::endl;
+			system("pause");
+			return 0;
+		}
+		if (i != test_amount - 1) {
+			delete[] input;
+		}
+		sum += (chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch()) - before_ms).count();
 	}
-
+	std::cout << "Average time to load an image: " << sum / test_amount << std::endl;
 
 	ImageIO::saveRGBImage(*input, ImageIO::getDebugFileName("debug.png"));
 
@@ -61,12 +71,23 @@ int main(int argc, char * argv[]) {
 
 
 bool executeSteps(DLLExecution * executor) {
-
-	//Execute the four Pre-processing steps
-	if (!executor->executePreProcessingStep1(false)) {
-		std::cout << "Pre-processing step 1 failed!" << std::endl;
-		return false;
+	namespace chrono = std::chrono;
+	int test_amount = 5000;
+	int sum = 0;
+	chrono::milliseconds before_ms;
+	for(int i = 0; i < test_amount; i++) {
+		before_ms = chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch());
+		//Execute the four Pre-processing steps
+		if (!executor->executePreProcessingStep1(false)) {
+			std::cout << "Pre-processing step 1 failed!" << std::endl;
+			return false;
+		}
+		if (i != test_amount - 1) {
+			delete[] executor->resultPreProcessingStep1;
+		}
+		sum += (chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch()) - before_ms).count();
 	}
+	std::cout << "Average time to convert an image from RGB to Intensity: " << sum / test_amount << std::endl;
 
 	if (!executor->executePreProcessingStep2(false)) {
 		std::cout << "Pre-processing step 2 failed!" << std::endl;
