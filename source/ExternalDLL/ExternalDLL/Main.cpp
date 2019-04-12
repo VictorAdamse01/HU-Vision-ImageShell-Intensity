@@ -17,7 +17,7 @@ bool executeSteps(DLLExecution * executor);
 int main(int argc, char * argv[]) {
 
 	ImageFactory::setImplementation(ImageFactory::DEFAULT);
-	// ImageFactory::setImplementation(ImageFactory::STUDENT);
+	//ImageFactory::setImplementation(ImageFactory::STUDENT);
 
 
 	ImageIO::debugFolder = "../Debug/Output";
@@ -26,22 +26,28 @@ int main(int argc, char * argv[]) {
 
 	// Load Image test
 	int test_amount = 1;
-	int sum = 0;
+	int sum = 0, min = 0, max = 0;
 	chrono::milliseconds before_ms;
-	RGBImage * input = ImageFactory::newRGBImage();;
+	RGBImage * input = ImageFactory::newRGBImage();
 	for (int i = 0; i < test_amount; i++) {
 		before_ms = chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch());
-		if (!ImageIO::loadImage("../../../testsets/Set A/TestSet Images/child-1.png", *input)) {
+		if (!ImageIO::loadImage("../../../testsets/Set A/TestSet Images/male-1.png", *input)) {
 			std::cout << "Image could not be loaded!" << std::endl;
 			system("pause");
 			return 0;
 		}
-		if (i != test_amount - 1) {
-			delete[] input;
+		int time = (chrono::duration_cast<chrono::milliseconds>(chrono::system_clock::now().time_since_epoch()) - before_ms).count();
+		sum += time;
+		if (time < min || i == 0) { 
+			min = time; 
 		}
-		sum += (chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch()) - before_ms).count();
+		if (time > max) {
+			max = time;
+		}
 	}
 	std::cout << "Average time to load an image: " << sum / test_amount << std::endl;
+	std::cout << "Minimum time to load an image: " << min << std::endl;
+	std::cout << "Maximum time to load an image: " << max << std::endl;
 
 	ImageIO::saveRGBImage(*input, ImageIO::getDebugFileName("debug.png"));
 
@@ -72,8 +78,8 @@ int main(int argc, char * argv[]) {
 
 bool executeSteps(DLLExecution * executor) {
 	namespace chrono = std::chrono;
-	int test_amount = 5000;
-	int sum = 0;
+	int test_amount = 1;
+	int sum = 0, min = 0, max = 0;
 	chrono::milliseconds before_ms;
 	for(int i = 0; i < test_amount; i++) {
 		before_ms = chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch());
@@ -82,12 +88,21 @@ bool executeSteps(DLLExecution * executor) {
 			std::cout << "Pre-processing step 1 failed!" << std::endl;
 			return false;
 		}
+        int time = (chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch()) - before_ms).count();
+		sum += time;
+		if(time < min || i == 0){
+		    min = time;
+		}
+		if(time > max){
+		    max = time;
+		}
 		if (i != test_amount - 1) {
 			delete[] executor->resultPreProcessingStep1;
 		}
-		sum += (chrono::duration_cast< chrono::milliseconds >(chrono::system_clock::now().time_since_epoch()) - before_ms).count();
 	}
 	std::cout << "Average time to convert an image from RGB to Intensity: " << sum / test_amount << std::endl;
+    std::cout << "Minimum time to convert an image from RGB to Intensity: " << min << std::endl;
+    std::cout << "Maximum time to convert an image from RGB to Intensity: " << max << std::endl;
 
 	if (!executor->executePreProcessingStep2(false)) {
 		std::cout << "Pre-processing step 2 failed!" << std::endl;
