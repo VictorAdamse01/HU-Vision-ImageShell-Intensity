@@ -1,27 +1,103 @@
 /*
-* Copyright (c) 2015 DottedEye Designs, Alexander Hustinx, NeoTech Software, Rolf Smit - All Rights Reserved
-* Unauthorized copying of this file, via any medium is strictly prohibited
-* Proprietary and confidential
-*/
+ * Copyright (c) 2015 DottedEye Designs, Alexander Hustinx, NeoTech Software, Rolf Smit - All Rights Reserved
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential
+ */
 
 #pragma once
 #include "IntensityImage.h"
+
+
+/**
+ * @brief
+ * class which holds an image comprised of Intensity values
+ */
 class IntensityImageStudent : public IntensityImage {
 private:
-	Intensity *values;
+    Intensity *values;
 
 public:
-	IntensityImageStudent();
-	IntensityImageStudent(const IntensityImageStudent &other);
-	IntensityImageStudent(const int width, const int height);
-	~IntensityImageStudent();
+    /**
+     * @brief
+     * construct a new IntensityImageStudent object with width and height defaulted to 0
+     */
+    IntensityImageStudent();
 
-	void set(const int width, const int height);
-	void set(const IntensityImageStudent &other);
+	/**
+     * @brief
+     * construct a new IntensityImageStudent object which is a copy of other
+     *
+     * @param other
+     */
+    IntensityImageStudent(const IntensityImageStudent &other);
 
-	void setPixel(int x, int y, Intensity pixel);
-	void setPixel(int i, Intensity pixel);
+	/**
+     * @brief
+     * onstruct a new IntensityImageStudent object with given width and height
+     *
+     * @param width
+     * @param height
+     */
+    IntensityImageStudent(const int width, const int height);
 
-	Intensity getPixel(int x, int y) const;
-	Intensity getPixel(int i) const;
+    /**
+     * @brief
+     * destroy the Intensity Image Student object
+     */
+    ~IntensityImageStudent();
+
+    /**
+     * @brief
+     * deletes old image and creates a new one with given width and height
+     *
+     * @param width
+     * @param height
+     */
+    void set(const int width, const int height);
+
+    /**
+     * @brief
+     * deletes old image and creates a new image which is a copy of other
+     *
+     * @param other
+     */
+    void set(const IntensityImageStudent &other);
+
+    /**
+     * @brief
+     * set pixel on position (x,y) to pixel
+     *
+     * @param x
+     * @param y
+     * @param pixel
+     */
+    void setPixel(int x, int y, Intensity pixel);
+
+    /**
+     * @brief
+     * set pixel on position i to pixel
+     *
+     * @param i
+     * @param pixel
+     */
+    void setPixel(int i, Intensity pixel);
+
+    /**
+     * @brief
+     * get Intensity value from position (x,y)
+     *
+     * @param x
+     * @param y
+     * @return Intensity
+     */
+    Intensity getPixel(int x, int y) const;
+
+    /**
+     * @brief
+     * get Intensity value from position i
+     *
+     * @param i
+     * @return Intensity
+     */
+    Intensity getPixel(int i) const;
 };

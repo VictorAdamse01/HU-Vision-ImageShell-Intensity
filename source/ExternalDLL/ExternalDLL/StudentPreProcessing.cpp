@@ -2,6 +2,13 @@
 #include "IntensityImageStudent.h"
 #include "RGBImageStudent.h"
 
+/**
+ * @brief
+ * converts a RGBImage to a new *IntensityImage
+ *
+ * @param image
+ * @return IntensityImage*
+ */
 IntensityImage *StudentPreProcessing::stepToIntensityImage(const RGBImage &image) const {
     IntensityImageStudent *new_img = new IntensityImageStudent(image.getWidth(), image.getHeight());
     for (int i = 0; i < image.getWidth() * image.getHeight(); i++) {
